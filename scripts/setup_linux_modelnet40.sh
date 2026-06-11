@@ -4,6 +4,8 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "${ROOT_DIR}"
 
+export TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST:-8.9}"
+
 python - <<'PY'
 import re
 import subprocess
@@ -16,6 +18,7 @@ print("PyTorch:", torch.__version__)
 print("PyTorch CUDA:", torch.version.cuda)
 print("CUDA available:", torch.cuda.is_available())
 print("CUDA_HOME:", CUDA_HOME)
+print("TORCH_CUDA_ARCH_LIST:", __import__("os").environ["TORCH_CUDA_ARCH_LIST"])
 if not torch.cuda.is_available():
     raise SystemExit("CUDA-enabled PyTorch is required before running this script.")
 if CUDA_HOME is None:

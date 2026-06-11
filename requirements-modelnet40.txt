@@ -1,18 +1,20 @@
-# Install PyTorch separately for the CUDA version on the Linux server.
-numpy==1.23.5
-scipy==1.9.3
-scikit-learn==1.0.2
-ninja==1.10.2.3
-easydict==1.9
-PyYAML==6.0
-protobuf==3.19.4
-tensorboard==2.8.0
-termcolor==1.1.0
-tqdm==4.62.3
-multimethod==1.7
-h5py==3.6.0
-matplotlib==3.5.1
-wandb==0.13.10
-pandas==1.4.4
+# Modern runtime for Ubuntu 24.04, Python 3.11 and PyTorch 2.8.
+# Install CUDA-enabled PyTorch separately before using this file.
+numpy==1.26.4
+scipy==1.11.4
+scikit-learn==1.3.2
+ninja==1.11.1.4
+easydict==1.13
+PyYAML==6.0.2
+protobuf==4.25.8
+tensorboard==2.15.2
+termcolor==2.4.0
+tqdm==4.67.1
+multimethod==1.10
+h5py==3.10.0
+matplotlib==3.8.4
+wandb==0.17.9
+pandas==2.1.4
 shortuuid==1.0.13
-setuptools==59.5.0
+setuptools>=69,<81
+wheel>=0.43

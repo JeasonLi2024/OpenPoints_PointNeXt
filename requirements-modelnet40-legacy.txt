@@ -1,0 +1,19 @@
+# Legacy environment matching the original PointNeXt release.
+# Use with Python 3.8, PyTorch 1.10.1 and a CUDA 11.3 toolkit.
+numpy==1.23.5
+scipy==1.9.3
+scikit-learn==1.0.2
+ninja==1.10.2.3
+easydict==1.9
+PyYAML==6.0
+protobuf==3.19.4
+tensorboard==2.8.0
+termcolor==1.1.0
+tqdm==4.62.3
+multimethod==1.7
+h5py==3.6.0
+matplotlib==3.5.1
+wandb==0.13.10
+pandas==1.4.4
+shortuuid==1.0.13
+setuptools==59.5.0

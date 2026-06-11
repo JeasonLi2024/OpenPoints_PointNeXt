@@ -121,35 +121,50 @@ python tools/check_dataset.py --full
 
 ## Linux GPU 环境
 
-官方代码基于较早版本的 PyTorch/CUDA。为了接近官方结果，建议在兼容的
-Ampere 服务器上使用：
+本项目默认安装方案面向当前服务器环境：
 
 - Linux x86_64；
-- Python 3.8；
-- PyTorch 1.10.1；
-- CUDA 11.3；
+- Ubuntu 24.04；
+- Python 3.11；
+- PyTorch 2.8.0；
+- CUDA 12.9；
+- RTX 4090，计算能力 8.9；
 - 与 CUDA 对应的 GCC/G++。
 
-先安装 CUDA 版 PyTorch，不能安装 CPU 版：
+创建独立环境并安装 PyTorch 官方 CUDA 12.9 wheel：
 
 ```bash
-conda create -n pointnext python=3.8 -y
-conda activate pointnext
-conda install pytorch=1.10.1 torchvision cudatoolkit=11.3 \
-  -c pytorch -c nvidia
+conda create -n pointnext-cu129 python=3.11 -y
+conda activate pointnext-cu129
+
+python -m pip install --upgrade pip
+python -m pip install \
+  torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 \
+  --index-url https://download.pytorch.org/whl/cu129
 ```
 
-然后在项目根目录执行：
+验证 PyTorch、CUDA Toolkit 与 GPU：
+
+```bash
+python -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda.get_device_name())"
+nvcc --version
+```
+
+两处 CUDA 版本都应为 `12.9`。然后在项目根目录执行：
 
 ```bash
 bash scripts/setup_linux_modelnet40.sh
 ```
 
 该脚本会检查 CUDA PyTorch、安装本任务依赖、编译
-`openpoints/cpp/pointnet2_batch` CUDA 扩展，并执行数据快速检查。
+`openpoints/cpp/pointnet2_batch` CUDA 扩展，并执行数据快速检查。脚本默认设置
+`TORCH_CUDA_ARCH_LIST=8.9`，只为 RTX 4090 编译目标架构。
 
-对于 Ada、Hopper 或更新 GPU，应按服务器驱动选择兼容的 PyTorch/CUDA
-组合，再编译扩展。不要直接照搬 CUDA 11.3；先确认以下版本彼此兼容：
+旧版官方复现环境的依赖保存在 `requirements-modelnet40-legacy.txt`，但
+PyTorch 1.10.1/CUDA 11.3 不能为 RTX 4090 原生生成 `sm_89` 代码，不建议在当前
+服务器上使用。
+
+先确认以下版本彼此兼容：
 
 ```bash
 nvidia-smi
