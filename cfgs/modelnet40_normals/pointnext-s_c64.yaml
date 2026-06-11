@@ -1,0 +1,33 @@
+# Official PointNeXt-S encoder, widened to C=64 and fed xyz+normal features.
+model:
+  NAME: BaseCls
+  encoder_args:
+    NAME: PointNextEncoder
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 64
+    in_channels: 6
+    radius: 0.15
+    radius_scaling: 1.5
+    sa_layers: 2
+    sa_use_res: true
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: dp_fj
+      reduction: max
+    group_args:
+      NAME: ballquery
+      normalize_dp: true
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: relu
+    norm_args:
+      norm: bn
+  cls_args:
+    NAME: ClsHead
+    num_classes: 40
+    mlps: [512, 256]
+    norm_args:
+      norm: bn1d

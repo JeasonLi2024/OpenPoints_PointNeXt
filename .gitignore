@@ -1,0 +1,52 @@
+# Local ModelNet40 data
+/modelnet40_train_data/
+/modelnet40_test_data/
+/data/
+
+# Training outputs
+/log/
+/log*/
+/output/
+/wandb/
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# Compiled CUDA/C++ artifacts
+*.so
+*.pyd
+*.dll
+*.dylib
+*.o
+*.obj
+build/
+dist/
+*.egg-info/
+openpoints/cpp/**/build/
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# IDE and notebook state
+.idea/
+.vscode/
+.ipynb_checkpoints/
+
+# OS and temporary files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+/.tmp_openpoints_checkout/
+/.tmp_pointnext_official/
