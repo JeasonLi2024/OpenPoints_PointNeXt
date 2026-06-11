@@ -1,6 +1,8 @@
 # Local ModelNet40 data
 /modelnet40_train_data/
 /modelnet40_test_data/
+/modelnet40_train_data.zip
+/modelnet40_test_data.zip
 /data/
 
 # Training outputs

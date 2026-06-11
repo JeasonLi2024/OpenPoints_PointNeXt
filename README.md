@@ -221,6 +221,42 @@ CUDA_VISIBLE_DEVICES=0 bash scripts/test_modelnet40_xyz.sh \
 确认当前环境中执行过 `bash scripts/setup_linux_modelnet40.sh`，并检查编译时
 使用的 PyTorch/CUDA 与运行时环境一致。切换 PyTorch 或 CUDA 后必须重新编译。
 
+如果出现以下错误：
+
+```text
+The detected CUDA version (...) mismatches the version that was used to compile
+PyTorch (...)
+```
+
+其中前者是 `CUDA_HOME` 下 `nvcc` 的版本，后者是 `torch.version.cuda`。两者的
+主版本和次版本必须一致。例如 PyTorch 为 CUDA 11.3 时：
+
+```bash
+python -c "import torch; print(torch.__version__, torch.version.cuda)"
+which nvcc
+nvcc --version
+echo "${CUDA_HOME}"
+```
+
+服务器同时安装多个 CUDA Toolkit 时，应切换到 11.3 后重新编译：
+
+```bash
+export CUDA_HOME=/usr/local/cuda-11.3
+export PATH="${CUDA_HOME}/bin:${PATH}"
+export LD_LIBRARY_PATH="${CUDA_HOME}/lib64:${LD_LIBRARY_PATH:-}"
+
+rm -rf openpoints/cpp/pointnet2_batch/build
+python -m pip uninstall -y pointnet2-cuda
+bash scripts/setup_linux_modelnet40.sh
+```
+
+如果服务器没有 `/usr/local/cuda-11.3`，需要由管理员安装对应 Toolkit，或改装
+一个与服务器现有 Toolkit 匹配的 CUDA 版 PyTorch。仅安装 Conda
+`cudatoolkit` 运行库通常不会提供编译扩展所需的 `nvcc`。
+
+注意：`nvidia-smi` 显示的是驱动最高支持的 CUDA 版本，不等同于当前用于编译的
+CUDA Toolkit 版本。判断编译版本应以 `nvcc --version` 和 `CUDA_HOME` 为准。
+
 ### 显存不足
 
 降低 `batch_size` 和 `val_batch_size`。源文件包含的点数可能明显大于 1024，
