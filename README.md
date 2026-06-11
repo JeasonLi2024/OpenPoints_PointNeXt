@@ -290,6 +290,17 @@ cd openpoints/cpp/pointnet2_batch
 python -m pip install -v --no-build-isolation .
 ```
 
+验证扩展时应先导入 PyTorch，使 `libc10.so`、`libtorch.so` 等共享库先加载：
+
+```bash
+python -c "import torch; import pointnet2_batch_cuda; print('pointnet2 CUDA extension OK')"
+python tools/check_pointnet2_cuda.py
+```
+
+若省略 `import torch`，可能出现
+`ImportError: libc10.so: cannot open shared object file`，这不代表扩展编译失败。
+第二条命令会实际在 GPU 上执行 FPS 和 ball query，不只是检查模块能否导入。
+
 ### 显存不足
 
 降低 `batch_size` 和 `val_batch_size`。源文件包含的点数可能明显大于 1024，

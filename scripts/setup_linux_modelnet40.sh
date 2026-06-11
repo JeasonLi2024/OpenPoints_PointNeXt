@@ -61,5 +61,6 @@ pushd openpoints/cpp/pointnet2_batch >/dev/null
 python -m pip install -v --no-build-isolation .
 popd >/dev/null
 
+python tools/check_pointnet2_cuda.py
 python tools/check_dataset.py
 echo "PointNeXt/OpenPoints ModelNet40 environment is ready."
