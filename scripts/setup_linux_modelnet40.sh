@@ -56,7 +56,9 @@ PY
 python -m pip install -r requirements-modelnet40.txt
 
 pushd openpoints/cpp/pointnet2_batch >/dev/null
-python -m pip install -v .
+# torch.utils.cpp_extension is imported by setup.py, so the build must reuse
+# the active environment instead of pip's isolated build environment.
+python -m pip install -v --no-build-isolation .
 popd >/dev/null
 
 python tools/check_dataset.py

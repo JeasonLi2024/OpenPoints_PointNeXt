@@ -160,6 +160,10 @@ bash scripts/setup_linux_modelnet40.sh
 `openpoints/cpp/pointnet2_batch` CUDA 扩展，并执行数据快速检查。脚本默认设置
 `TORCH_CUDA_ARCH_LIST=8.9`，只为 RTX 4090 编译目标架构。
 
+扩展安装使用 `pip --no-build-isolation`。这是必要设置，因为扩展的 `setup.py`
+会直接导入 `torch.utils.cpp_extension`，而新版 pip 创建的临时隔离构建环境
+默认没有 PyTorch。
+
 旧版官方复现环境的依赖保存在 `requirements-modelnet40-legacy.txt`，但
 PyTorch 1.10.1/CUDA 11.3 不能为 RTX 4090 原生生成 `sm_89` 代码，不建议在当前
 服务器上使用。
@@ -271,6 +275,20 @@ bash scripts/setup_linux_modelnet40.sh
 
 注意：`nvidia-smi` 显示的是驱动最高支持的 CUDA 版本，不等同于当前用于编译的
 CUDA Toolkit 版本。判断编译版本应以 `nvcc --version` 和 `CUDA_HOME` 为准。
+
+如果错误为：
+
+```text
+ModuleNotFoundError: No module named 'torch'
+Getting requirements to build wheel
+```
+
+这不是当前 Conda 环境缺少 PyTorch，而是 pip 隔离构建环境缺少 PyTorch。使用：
+
+```bash
+cd openpoints/cpp/pointnet2_batch
+python -m pip install -v --no-build-isolation .
+```
 
 ### 显存不足
 
